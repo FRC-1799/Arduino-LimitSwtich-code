@@ -310,15 +310,15 @@ void report(){
     packageToBeSent[n+2]=CurrentPack.valueByte;
   }
 
-  if(packageToBeSent[2]==falseVal){
-    Serial.print("WIREING ISSUE, WIREING ISSUE, JACE SUCKS");
-  }
-  else{
-    Serial.print("wiring is fine... for now");
-  }
-  Serial.print("   Value byte = ");
-  Serial.write(packageToBeSent[3]);
-  //Serial.write(packageToBeSent, 1+SwitchCount*3);
+//  if(packageToBeSent[2]==falseVal){
+//    Serial.print("WIREING ISSUE, WIREING ISSUE, JACE SUCKS");
+//  }
+//  else{
+//    Serial.print("wiring is fine... for now");
+//  }
+//  Serial.print("   Value byte = ");
+//  Serial.write(packageToBeSent[3]);
+  Serial.write(packageToBeSent, 1+SwitchCount*3);
 //  if(packageToBeSent[2]==255){
 //    digitalWrite(30, true);
 //  }

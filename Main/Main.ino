@@ -115,11 +115,12 @@ byte* readPackage(){
       ByteArray[i] = Serial.read();
     }
 
-    //makes sure there is a package finisher
-    packageHasBeenFound = true;
-    for (int i = 0; i < 3; i++){
-      if (Serial.read() != 255){
-        packageHasBeenFound = false;
+      //makes sure there is a package finisher
+      packageHasBeenFound = true;
+      for (int i = 0; i < 3; i++){
+        if (ByteArrayLen != 255){
+          packageHasBeenFound = false;
+        }
       }
     }
   }

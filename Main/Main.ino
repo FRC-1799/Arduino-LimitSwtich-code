@@ -62,20 +62,20 @@ void setup() {
   //sets up the serial conntection
   Serial.begin(9600);
 
-   InitPackage = readPackage();
+  InitPackage = readPackage();
 
-   //creates an array of switchs based on the init package
-   byte InitPackageLen=InitPackage[0];
-   SwitchCount = (InitPackageLen-1) / 3;
-   SwitchArray = (Switch*)malloc(SwitchCount * sizeof(Switch));
+  //creates an array of switchs based on the init package
+  byte InitPackageLen=InitPackage[0];
+  SwitchCount = (InitPackageLen-1) / 3;
+  SwitchArray = (Switch*)malloc(SwitchCount * sizeof(Switch));
 
-   //reads groups of five bytes into switch objects to be stored for loop
-   for (byte i = 1, n = 0; n<SwitchCount; i += 3, n++){
-      SwitchArray[n] = *new Switch(InitPackage[i], InitPackage[i+1], InitPackage[i+2]);
-    }
+  //reads groups of five bytes into switch objects to be stored for loop
+  for (byte i = 1, n = 0; n<SwitchCount; i += 3, n++){
+    SwitchArray[n] = *new Switch(InitPackage[i], InitPackage[i+1], InitPackage[i+2]);
+  }
 
-   //sends back the recived package so the rio can conferm the package was correctly recived
-   Serial.write(InitPackage, InitPackageLen);
+  //sends back the recived package so the rio can conferm the package was correctly recived
+  Serial.write(InitPackage, InitPackageLen);
 }
 
 //reads the inital pack into an array 

@@ -33,7 +33,7 @@ class Switch{
     statusPort = StatusPort;
   }
    //returns the switch data in the form of a byte pack
-   BytePack getValue(){  
+  BytePack getValue(){  
     return BytePack(ID, boolToByte(digitalRead(valuePort)), boolToByte(digitalRead(statusPort)||digitalRead(valuePort)));
   }
   //turns bools in bytes based on the true and false vals 
@@ -62,59 +62,58 @@ void setup() {
   //sets up the serial conntection
   Serial.begin(9600);
 
-   InitPackage = readPackage();
+  InitPackage = readPackage();
 
-   //creates an array of switchs based on the init package
-   byte InitPackageLen=InitPackage[0];
-   SwitchCount = (InitPackageLen-1) / 3;
-   SwitchArray = (Switch*)malloc(SwitchCount * sizeof(Switch));
+  //creates an array of switchs based on the init package
+  byte InitPackageLen=InitPackage[0];
+  SwitchCount = (InitPackageLen-1) / 3;
+  SwitchArray = (Switch*)malloc(SwitchCount * sizeof(Switch));
 
-   //reads groups of five bytes into switch objects to be stored for loop
-   for (byte i = 1, n = 0; n<SwitchCount; i += 3, n++){
-      SwitchArray[n] = *new Switch(InitPackage[i], InitPackage[i+1], InitPackage[i+2]);
-    }
+  //reads groups of five bytes into switch objects to be stored for loop
+  for (byte i = 1, n = 0; n<SwitchCount; i += 3, n++){
+    SwitchArray[n] = *new Switch(InitPackage[i], InitPackage[i+1], InitPackage[i+2]);
+  }
 
-   //sends back the recived package so the rio can conferm the package was correctly recived
-   Serial.write(InitPackage, InitPackageLen);
+  //sends back the recived package so the rio can conferm the package was correctly recived
+  Serial.write(InitPackage, InitPackageLen);
 }
 
 //reads the inital pack into an array 
 byte* readPackage(){
-   boolean packageHasBeenFound = false;
-   byte *ByteArray;
+  boolean packageHasBeenFound = false;
+  byte *ByteArray;
 
-   //byte ByteArray[]={6, 01, 00, 22, 34, 35};
-   //return ByteArray;
+  //byte ByteArray[]={6, 01, 00, 22, 34, 35};
+  //return ByteArray;
 
-   //reads for a pack
-   while (!packageHasBeenFound){
-      byte initByteCount = 0;
+  //reads for a pack
+  while (!packageHasBeenFound){
+    byte initByteCount = 0;
 
-      //reads untill it finds a pack and will wait untill the serial port gets data if the port has no data
-      while (initByteCount < 3){       
-        if(!Serial.available())
-        {
-          delay(20);
-          continue;
-        }
-
-        if(Serial.read() == 0){
-          initByteCount++;
-        }
-        else{
-            initByteCount = 0;
-        }
+    //reads untill it finds a pack and will wait untill the serial port gets data if the port has no data
+    while (initByteCount < 3){       
+      if (!Serial.available()){
+        delay(20);
+        continue;
       }
+
+      else if(Serial.read() == 0){
+        initByteCount++;
+      }
+      else{
+        initByteCount = 0;
+      }
+    }
   
-      //reads the number of bytes to be recived in the package
-      int ByteArrayLen = Serial.read();
-      ByteArray = (byte*)malloc(ByteArrayLen);
-      ByteArray[0] = ByteArrayLen;
-      
-      //reads the package bytes into a list
-      for (int i = 1; i < ByteArrayLen; i++){
-        ByteArray[i] = Serial.read();
-      }
+    //reads the number of bytes to be recived in the package
+    int ByteArrayLen = Serial.read();
+    ByteArray = (byte*)malloc(ByteArrayLen);
+    ByteArray[0] = ByteArrayLen;
+    
+    //reads the package bytes into a list
+    for (int i = 1; i < ByteArrayLen; i++){
+      ByteArray[i] = Serial.read();
+    }
 
       //makes sure there is a package finisher
       packageHasBeenFound = true;
@@ -124,7 +123,8 @@ byte* readPackage(){
         }
       }
     }
-    return ByteArray;
+  }
+  return ByteArray;
 }
 
 /* expected send format

@@ -33,7 +33,7 @@ class Switch{
     statusPort = StatusPort;
   }
    //returns the switch data in the form of a byte pack
-   BytePack getValue(){  
+  BytePack getValue(){  
     return BytePack(ID, boolToByte(digitalRead(valuePort)), boolToByte(digitalRead(statusPort)||digitalRead(valuePort)));
   }
   //turns bools in bytes based on the true and false vals 
